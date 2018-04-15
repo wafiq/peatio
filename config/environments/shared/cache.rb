@@ -1,3 +1,3 @@
 Rails.application.configure do
-  config.cache_store = :redis_store, ENV.fetch('REDIS_URL')
+  config.cache_store = :redis_store, Figaro.env.redis_url
 end
