@@ -74,6 +74,8 @@ gem 'method-not-implemented', '~> 1.0'
 gem 'passgen', '~> 1.0'
 gem 'validates_lengths_from_database', '~> 0.7.0'
 gem 'jwt-multisig', '~> 1.0'
+gem 'mina'
+gem 'mina-puma'
 
 group :development, :test do
   gem 'faker',        '~> 1.8'
