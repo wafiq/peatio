@@ -31,6 +31,7 @@ private
   end
 
   def redirect_on_successful_sign_in
+    logger.debug auth_hash.fetch('credentials')
     "#{params[:provider].to_s.gsub(/(?:_|oauth2)+\z/i, '').upcase}_OAUTH2_REDIRECT_URL".tap do |key|
       if ENV[key] && params[:provider].to_s == 'barong'
         redirect_to "#{ENV[key]}?#{auth_hash.fetch('credentials').to_query}"
