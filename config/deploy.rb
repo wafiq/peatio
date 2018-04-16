@@ -10,7 +10,7 @@ require 'mina/puma'
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :application_name, 'peatio'
-set :domain, '45.32.106.214'
+set :domain, '108.160.142.29'
 set :user, fetch(:application_name)
 set :deploy_to, "/home/#{fetch(:user)}/app"
 set :repository, 'git@github.com:wafiq/peatio.git'
@@ -47,6 +47,26 @@ task :setup do
   end
 end
 
+namespace :config do
+  desc "Run config init file."
+  task :init do
+    command %{
+      echo "-----> Run config init file"
+      #{echo_cmd %[bin/init_config]}
+    }
+  end
+end
+
+namespace :yarn do
+  desc "Install package dependencies using yarn."
+  task :install do
+    command %{
+      echo "-----> Installing package dependencies using yarn"
+      #{echo_cmd %[yarn install --modules-folder ./vendor/assets/yarn_components/yarn_components --production]}
+    }
+  end
+end
+
 desc "Deploys the current version to the server."
 task :deploy do
   # uncomment this line to make sure you pushed your local branch to the remote origin
@@ -56,6 +76,8 @@ task :deploy do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
+    invoke :'config:init'
+    invoke :'yarn:install'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
